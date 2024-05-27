@@ -1,8 +1,19 @@
-import * as React from 'react';
-import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import {Text, View} from 'react-native';
+import React from 'react';
 
-const MyComponent = () => (
-  <ActivityIndicator animating={true} color={MD2Colors.red800} />
-);
+export default function Test() {
+    return (
+        <View>
+            <Text>Component test</Text>
+            <Button
+                icon="camera"
+                mode="contained"
+                onPress={() => console.log('Pressed')}>
+                Press me
+            </Button>
 
-export default MyComponent;
+        </View>
+    );
+}
+
+const styles = StyleSheet.create();

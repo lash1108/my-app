@@ -3,6 +3,7 @@ const colors = {
     dark: "#000",
     fontLight: "#fff",
     bgLight: "#fff",
-    bgDark: "16222b",
-};
+    bgDark: "#16222B"
+}
+
 export default colors;
