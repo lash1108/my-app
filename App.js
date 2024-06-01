@@ -1,45 +1,71 @@
-import { PaperProvider } from 'react-native-paper';
-import React, { useEffect, useMemo, useState } from 'react';
 
-import Auth from './src/screens/Auth';
+import { PaperProvider } from "react-native-paper";
+import React, { useEffect, useMemo, useState } from "react";
+
+import Auth from "./src/screens/Auth";
 import AuthContext from "./src/components/context/AuthContext";
-import { setTokenApi } from "./src/api/token";
+import { getTokenApi, removeTokenApi, setTokenApi } from "./src/api/token";
 import Dashboard from "./src/components/Home/DashBoard";
+import { jwtDecode } from "jwt-decode";
+import Logout from "./src/components/Auth/Logout";
 
 export default function App() {
-    const [auth, setAuth] = useState(undefined);
+  const [auth, setAuth] = useState(undefined);
 
-    useEffect(() => {
-        console.log("useEffect - setting auth to null");
-        setAuth(null);
-    }, []);
-
-    const login = (user) => {
-        console.log('LOGGING IN');
-        console.log(user);
-        setTokenApi(user.jwt);
+  useEffect(() => {
+    async function fetchData() {
+      const token = await getTokenApi();
+      if (token) {
         setAuth({
-            token: user.jwt,
-            idUser: user.id
+          token,
+          idUser: jwtDecode(token),
         });
+        console.log("Logged");
+        console.log(token);
+        console.log(jwtDecode(token));
+      }
     }
+    fetchData();
 
-    const authData = useMemo(() => ({
-        auth,
-        login,
-        logout: () => null
-    }), [auth]);
+    setAuth(null);
+  }, []);
 
-    if (auth === undefined) return null;
+  const login = (user) => {
+    console.log("LOGGING IN");
+    console.log(user);
+    setTokenApi(user.jwt);
+    setAuth({
+      token: user.jwt,
+      idUser: user.user._id,
+    });
+  };
 
-    console.log("Rendering App with auth:", auth);
+  const logout = () => {
+    if (auth) {
+      removeTokenApi();
+      setAuth(null);
+    }
+  };
 
-    return (
-        <AuthContext.Provider value={authData}>
-            <PaperProvider>
-                {auth ?
-                    <Dashboard /> : <Auth />}
-            </PaperProvider>
-        </AuthContext.Provider>
-    );
+  const authData = useMemo(
+    () => ({
+      auth,
+      login,
+      logout,
+    }),
+    [auth]
+  );
+
+  if (auth === undefined) return null;
+
+  console.log("Rendering App with auth:", auth);
+
+  return (
+    <AuthContext.Provider value={authData}>
+      {authData.auth && <Logout authData={authData} />}
+      <PaperProvider>
+        {authData.auth ? <Dashboard /> : <Auth />}
+      </PaperProvider>
+    </AuthContext.Provider>
+  );
 }

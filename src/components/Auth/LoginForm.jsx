@@ -10,8 +10,7 @@ import useAuth from "../../hooks/useAuth";
 export default function LoginForm({changeForm}) {
 
     const {login} = useAuth()
-    //console.log(auth)
-    
+     
 
     const formik = useFormik({
         initialValues: initialValues(),
@@ -20,6 +19,7 @@ export default function LoginForm({changeForm}) {
             console.log(formData);
             try {
                 const response = await loginApi(formData)
+                if(response.statusCode) throw 'Error'
                 //console.log(response)
                 //console.log(response.user.name)
                 login(response)
