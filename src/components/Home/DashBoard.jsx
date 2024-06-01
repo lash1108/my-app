@@ -37,57 +37,86 @@ export default function Dashboard() {
     };
 
     return (
-        <View style={{ flex: 1, padding: 20 }}>
-            <Title>Últimos Posts</Title>
-            <Button
-                mode="contained"
-                onPress={handleToggleView}
-                style={{ marginTop: 10 }}
-            >
-                {showForm ? "Ver Posts" : "Crear Nuevo Post"}
-            </Button>
-            {showForm ? (
-                <Card style={{ marginTop: 10 }}>
-                    <Card.Content>
-                        <TextInput
-                            placeholder="Título"
-                            onChangeText={text => setTitulo(text)}
-                            value={titulo}
-                            style={{ marginBottom: 10 }}
-                        />
-                        <TextInput
-                            placeholder="Mensaje"
-                            onChangeText={text => setMensaje(text)}
-                            value={mensaje}
-                            multiline
-                            style={{ marginBottom: 10 }}
-                        />
-                        <Button
-                            mode="contained"
-                            onPress={handleFormSubmit}
-                        >
-                            Publicar
-                        </Button>
-                    </Card.Content>
-                </Card>
-            ) : (
-                postData && postData.map((post, index) => (
-                    <Card key={index} style={{ marginTop: 10 }}>
-                        <Card.Content>
-                            <Title>{post.Titulo}</Title>
-                            <Paragraph>{post.Fecha}</Paragraph>
-                            <Paragraph>{post.Mensaje}</Paragraph>
-                            {post.Recursos && post.Recursos.map((recurso, idx) => (
-                                <Image
-                                    key={idx}
-                                    source={{ uri: `${API_URL}${recurso.url}` }}
-                                    style={{ width: 200, height: 200 }}
-                                />
-                            ))}
-                        </Card.Content>
-                    </Card>
-                ))
-            )}
-        </View>
-    );
-}
+        <ScrollView contentContainerStyle={styles.container}>
+          <Title style={styles.title}>Últimos Posts</Title>
+          <Button
+            mode="contained"
+            onPress={handleToggleView}
+            style={styles.toggleButton}
+          >
+            {showForm ? "Ver Posts" : "Crear Nuevo Post"}
+          </Button>
+          {showForm ? (
+            <Card style={styles.card}>
+              <Card.Content>
+                <TextInput
+                  label="Título"
+                  value={titulo}
+                  onChangeText={setTitulo}
+                  style={styles.input}
+                />
+                <TextInput
+                  label="Mensaje"
+                  value={mensaje}
+                  onChangeText={setMensaje}
+                  multiline
+                  style={styles.input}
+                />
+                <Button
+                  mode="contained"
+                  onPress={handleFormSubmit}
+                  style={styles.submitButton}
+                >
+                  Publicar
+                </Button>
+              </Card.Content>
+            </Card>
+          ) : (
+            postData && postData.map((post, index) => (
+              <Card key={index} style={styles.card}>
+                <Card.Content>
+                  <Title>{post.Titulo}</Title>
+                  <Paragraph>{post.Fecha}</Paragraph>
+                  <Paragraph>{post.Mensaje}</Paragraph>
+                  {post.Recursos && post.Recursos.map((recurso, idx) => (
+                    <Image
+                      key={idx}
+                      source={{ uri: `${API_URL}${recurso.url}` }}
+                      style={styles.image}
+                    />
+                  ))}
+                </Card.Content>
+              </Card>
+            ))
+          )}
+        </ScrollView>
+      );
+    };
+    
+    const styles = StyleSheet.create({
+      container: {
+        flexGrow: 1,
+        padding: 20,
+      },
+      title: {
+        marginBottom: 10,
+      },
+      toggleButton: {
+        marginTop: 10,
+      },
+      card: {
+        marginTop: 10,
+      },
+      input: {
+        marginBottom: 10,
+      },
+      submitButton: {
+        marginTop: 10,
+      },
+      image: {
+        width: 200,
+        height: 200,
+        marginTop: 10,
+      },
+    });
+    

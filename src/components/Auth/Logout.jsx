@@ -8,7 +8,7 @@ export default function Logout({ authData }) {
       <Button
         mode="contained"
         onPress={authData.logout}
-        style={styles.button}
+        contentStyle={styles.buttonContent}
         labelStyle={styles.buttonText}
       >
         Cerrar Sesión
@@ -16,25 +16,16 @@ export default function Logout({ authData }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5", // Fondo claro para el contenedor
-    position: 'relative', // Asegura que el contenedor sea relativo para que el botón se posicione dentro de él
+    alignItems: 'center',
+    marginTop: 20,
   },
-  button: {
-    backgroundColor: 'red', // Color de fondo del botón
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    position: 'absolute',
-    top: 20,
-    right: 20,
+  buttonContent: {
+    height: 50, // Ajusta el tamaño del botón según tus necesidades
+    width: '80%', // Ajusta el tamaño del botón según tus necesidades
   },
   buttonText: {
-    color: 'white', // Color del texto del botón
     fontSize: 16,
-    fontWeight: 'bold',
   },
 });
