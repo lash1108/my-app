@@ -1,4 +1,3 @@
-import { Text } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import React, { useEffect, useMemo, useState } from 'react';
 

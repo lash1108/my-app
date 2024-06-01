@@ -1,7 +1,7 @@
 import {Image, View} from 'react-native';
 import React, {useState} from 'react';
 import {layoutStyles} from '../styles/index';
-import FI from '../../assets/images.png';
+import Uaemex from '../../assets/images.png';
 import RegisterForm from '../components/Auth/RegisterForm';
 import LoginForm from '../components/Auth/LoginForm';
 
@@ -12,7 +12,7 @@ export default function Auth() {
     return (
         <View style={layoutStyles.container}>
             <Image
-                source={FI}
+                source={Uaemex}
                 style={layoutStyles.logo}
             />
             {showLogin ?
