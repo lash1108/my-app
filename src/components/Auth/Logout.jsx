@@ -6,6 +6,7 @@ export default function Logout({ authData }) {
   return (
     <View style={styles.container}>
       <Button
+      width="100%"
         mode="contained"
         onPress={authData.logout}
         contentStyle={styles.buttonContent}
@@ -18,12 +19,13 @@ export default function Logout({ authData }) {
 }
 const styles = StyleSheet.create({
   container: {
+
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 80,
   },
   buttonContent: {
-    height: 50, // Ajusta el tamaño del botón según tus necesidades
-    width: '80%', // Ajusta el tamaño del botón según tus necesidades
+    height: 50, 
+    width: 200, 
   },
   buttonText: {
     fontSize: 16,

@@ -18,7 +18,7 @@ const NotesComponent = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/items'); // Corregido
+      const response = await axios.get('https://yamenadiosbandajksjdskj.azurewebsites.net/items'); // Corregido
       setItems(response.data);
     } catch (error) {
       console.error(error);
@@ -65,7 +65,7 @@ const NotesComponent = () => {
     try {
       const formData = await createFormData(name, description, image);
       console.log(formData, image);
-      const response = await axios.post(`http://localhost:5000/items`, formData, {
+      const response = await axios.post(`https://yamenadiosbandajksjdskj.azurewebsites.net/items`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -82,7 +82,7 @@ const NotesComponent = () => {
 
   const deleteItem = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/items/${id}`); // Corregido
+      await axios.delete(`https://yamenadiosbandajksjdskj.azurewebsites.net/items/${id}`); // Corregido
       setItems(items.filter(item => item._id !== id));
     } catch (error) {
       console.error(error);
@@ -92,7 +92,7 @@ const NotesComponent = () => {
   const editItem = async () => {
     try {
       const formData = await createFormData(name, description, image);
-      const response = await axios.put(`http://localhost:5000/items/${editingItemId}`, formData, {
+      const response = await axios.put(`https://yamenadiosbandajksjdskj.azurewebsites.net/items/${editingItemId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -133,7 +133,7 @@ const NotesComponent = () => {
           <View style={styles.item}>
             <Text>{item.name}</Text>
             <Text>{item.description}</Text>
-            {item.imageUrl && <Image source={{ uri: `http://localhost:5000${item.imageUrl}` }} style={styles.image} />} {/* Corregido */}
+            {/* {item.imageUrl && <Image source={{ uri: `https://yamenadiosbandajksjdskj.azurewebsites.net/${item.imageUrl}` }} style={styles.image} />} Corregido */}
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => startEditItem(item)} style={styles.button}>
                 <Text style={styles.buttonText}>Editar</Text>
@@ -163,8 +163,8 @@ const NotesComponent = () => {
             style={styles.input}
           />
           {image && <Image source={{ uri: image }} style={styles.image} />}
-          <Button title={editingItemId ? "Editar nota" : "Agregar nota"} onPress={editingItemId ? editItem : addItem} />
-          <Button title="Cerrar" onPress={() => setModalVisible(false)} />
+          <Button contentStyle={styles.buttonContent} title={editingItemId ? "Editar nota" : "Agregar nota"} onPress={editingItemId ? editItem : addItem} />
+          <Button contentStyle={styles.buttonContent} title="Cerrar" onPress={() => setModalVisible(false)} />
         </View>
       </Modal>
     </View>
@@ -189,6 +189,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
+  },
+  buttonContent: {
+    color:"purple",
+    margin:20,
   },
   buttonContainer: {
     flexDirection: 'row',
