@@ -3,7 +3,6 @@ import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity, 
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
-import {BACK_URL} from '../../../utils/constants';
 
 const NotesComponent = () => {
   const [items, setItems] = useState([]);
@@ -13,14 +12,13 @@ const NotesComponent = () => {
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-
   useEffect(() => {
     fetchItems();
   }, []);
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get(`${BACK_URL}/items`);
+      const response = await axios.get('http://localhost:5000/items'); // Corregido
       setItems(response.data);
     } catch (error) {
       console.error(error);
@@ -35,9 +33,10 @@ const NotesComponent = () => {
       quality: 1,
     });
 
-      setImage(result[0].uri);
+    if (!result.cancelled) {
+      setImage(result.uri);
       console.log(result);
-    
+    }
   };
 
   const createFormData = async (name, description, imageUri) => {
@@ -66,7 +65,7 @@ const NotesComponent = () => {
     try {
       const formData = await createFormData(name, description, image);
       console.log(formData, image);
-      const response = await axios.post(`${BACK_URL}/items`, formData, {
+      const response = await axios.post(`http://localhost:5000/items`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -83,7 +82,7 @@ const NotesComponent = () => {
 
   const deleteItem = async (id) => {
     try {
-      await axios.delete(`${BACK_URL}/items/${id}`);
+      await axios.delete(`http://localhost:5000/items/${id}`); // Corregido
       setItems(items.filter(item => item._id !== id));
     } catch (error) {
       console.error(error);
@@ -93,7 +92,7 @@ const NotesComponent = () => {
   const editItem = async () => {
     try {
       const formData = await createFormData(name, description, image);
-      const response = await axios.put(`${BACK_URL}/items/${editingItemId}`, formData, {
+      const response = await axios.put(`http://localhost:5000/items/${editingItemId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -134,7 +133,7 @@ const NotesComponent = () => {
           <View style={styles.item}>
             <Text>{item.name}</Text>
             <Text>{item.description}</Text>
-            {item.imageUrl && <Image source={{ uri: `${BACK_URL}${item.imageUrl}` }} style={styles.image} />}
+            {item.imageUrl && <Image source={{ uri: `http://localhost:5000${item.imageUrl}` }} style={styles.image} />} {/* Corregido */}
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => startEditItem(item)} style={styles.button}>
                 <Text style={styles.buttonText}>Editar</Text>
@@ -164,7 +163,7 @@ const NotesComponent = () => {
             style={styles.input}
           />
           {image && <Image source={{ uri: image }} style={styles.image} />}
-          <Button  title={editingItemId ? "Editar nota" : "Agregar nota"} onPress={editingItemId ? editItem : addItem}  />
+          <Button title={editingItemId ? "Editar nota" : "Agregar nota"} onPress={editingItemId ? editItem : addItem} />
           <Button title="Cerrar" onPress={() => setModalVisible(false)} />
         </View>
       </Modal>
@@ -200,8 +199,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#2196F3',
     borderRadius: 5,
-    marginBottom:5,
-    marginTop:6
+    marginBottom: 5,
+    marginTop: 6
   },
   buttonText: {
     color: '#fff',
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom:20
+    marginBottom: 20
   },
   addButtonText: {
     color: '#fff',

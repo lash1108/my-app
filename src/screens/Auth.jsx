@@ -4,6 +4,7 @@ import {layoutStyles} from '../styles/index';
 import Uaemex from '../../assets/images.png';
 import RegisterForm from '../components/Auth/RegisterForm';
 import LoginForm from '../components/Auth/LoginForm';
+import Dashboard from '../components/Home/DashBoard';
 
 export default function Auth() {
     const [showLogin, setShowLogin] = useState(false)
@@ -16,7 +17,9 @@ export default function Auth() {
                 style={layoutStyles.logo}
             />
             {showLogin ?
-                <LoginForm changeForm={changeForm}/> :
+                // <LoginForm changeForm={changeForm}/> 
+                <Dashboard/>
+                :
                 <RegisterForm changeForm={changeForm}/>}
         </View>
     );
