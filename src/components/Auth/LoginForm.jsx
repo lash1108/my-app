@@ -1,16 +1,14 @@
-import {StyleSheet, View} from 'react-native'
-import React from 'react'
-import {Button, TextInput} from 'react-native-paper'
-import {formStyles} from '../../styles'
-import {useFormik} from 'formik'
-import * as Yup from 'yup'
-import {loginApi} from '../../api/users'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { loginApi } from '../../api/users';
 import useAuth from "../../hooks/useAuth";
+import { formStyles } from '../../styles';
 
-export default function LoginForm({changeForm}) {
-
-    const {login} = useAuth()
-     
+export default function LoginForm({ changeForm }) {
+    const { login } = useAuth();
 
     const formik = useFormik({
         initialValues: initialValues(),
@@ -18,13 +16,11 @@ export default function LoginForm({changeForm}) {
         onSubmit: async (formData) => {
             console.log(formData);
             try {
-                const response = await loginApi(formData)
-                if(response.statusCode) throw 'Error'
-                //console.log(response)
-                //console.log(response.user.name)
-                login(response)
+                const response = await loginApi(formData);
+                if (response.statusCode) throw 'Error';
+                login(response);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
     });
@@ -33,20 +29,20 @@ export default function LoginForm({changeForm}) {
         return {
             identifier: "",
             password: ""
-        }
+        };
     }
 
     function validationSchema() {
         return {
-            identifier: Yup.string().email().required(true),
+            identifier: Yup.string().required(true),
             password: Yup.string().required(true)
-        }
+        };
     }
 
     return (
-        <View>
+        <View style={styles.container}>
             <TextInput
-                label="Correo electronico o Username"
+                label="Correo electrónico o Username"
                 style={formStyles.input}
                 onChangeText={(text) => formik.setFieldValue('identifier', text)}
                 value={formik.values.identifier}
@@ -64,7 +60,7 @@ export default function LoginForm({changeForm}) {
                 mode="contained"
                 style={formStyles.btnSuccess}
                 onPress={formik.handleSubmit}>
-                Iniciar Sesion
+                Iniciar Sesión
             </Button>
             <Button
                 mode="text"
@@ -74,7 +70,11 @@ export default function LoginForm({changeForm}) {
                 Registrarse
             </Button>
         </View>
-    )
+    );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        padding: 20,
+    }
+});

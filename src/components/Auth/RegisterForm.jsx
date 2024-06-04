@@ -1,23 +1,23 @@
-import {StyleSheet, View} from 'react-native'
-import React from 'react'
-import {Button, TextInput} from 'react-native-paper'
-import {formStyles} from '../../styles'
-import {useFormik} from 'formik'
-import * as Yup from 'yup'
-import {registerApi} from '../../api/users'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { registerApi } from '../../api/users';
+import { formStyles } from '../../styles';
 
-export default function RegisterForm({changeForm}) {
-
+export default function RegisterForm({ changeForm }) {
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema: Yup.object(validationSchema()),
         onSubmit: async (formData) => {
             console.log(formData);
             try {
-                await registerApi(formData)
-                console.log('Usuario registrado...')
+                await registerApi(formData);
+                console.log('Usuario registrado...');
+                changeForm(); 
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
     });
@@ -28,7 +28,7 @@ export default function RegisterForm({changeForm}) {
             username: "",
             password: "",
             repeatPassword: ""
-        }
+        };
     }
 
     function validationSchema() {
@@ -36,14 +36,14 @@ export default function RegisterForm({changeForm}) {
             email: Yup.string().email().required(true),
             username: Yup.string().required(true),
             password: Yup.string().required(true),
-            repeatPassword: Yup.string().required(true).oneOf([Yup.ref('password')])
-        }
+            repeatPassword: Yup.string().required(true).oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir')
+        };
     }
 
     return (
-        <View>
+        <View style={styles.container}>
             <TextInput
-                label="Correo electronico"
+                label="Correo electrónico"
                 style={formStyles.input}
                 onChangeText={(text) => formik.setFieldValue('email', text)}
                 value={formik.values.email}
@@ -54,8 +54,8 @@ export default function RegisterForm({changeForm}) {
                 label="Nombre de usuario"
                 style={formStyles.input}
                 onChangeText={(text) => formik.setFieldValue('username', text)}
-                value={formik.values.userName}
-                error={formik.errors.userName}
+                value={formik.values.username}
+                error={formik.errors.username}
             />
 
             <TextInput
@@ -91,7 +91,11 @@ export default function RegisterForm({changeForm}) {
                 Iniciar sesión
             </Button>
         </View>
-    )
+    );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        padding: 20,
+    }
+});

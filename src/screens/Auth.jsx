@@ -17,8 +17,8 @@ export default function Auth() {
                 style={layoutStyles.logo}
             />
             {showLogin ?
-                // <LoginForm changeForm={changeForm}/> 
-                <Dashboard/>
+                <LoginForm changeForm={changeForm}/> 
+                // <Dashboard/>
                 :
                 <RegisterForm changeForm={changeForm}/>}
         </View>
