@@ -133,7 +133,6 @@ const NotesComponent = () => {
           <View style={styles.item}>
             <Text>{item.name}</Text>
             <Text>{item.description}</Text>
-            {/* {item.imageUrl && <Image source={{ uri: `https://yamenadiosbandajksjdskj.azurewebsites.net/${item.imageUrl}` }} style={styles.image} />} Corregido */}
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => startEditItem(item)} style={styles.button}>
                 <Text style={styles.buttonText}>Editar</Text>
